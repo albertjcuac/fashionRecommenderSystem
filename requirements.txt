@@ -1,1 +1,9 @@
 Django
+numpy
+torch
+pandas
+Pillow
+fastcore
+torchvision
+torchmetrics
+pytorch_lightning

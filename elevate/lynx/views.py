@@ -12,36 +12,36 @@ import torchmetrics as metrics
 import pytorch_lightning as pl
 
 
-
+ds=pd.read_csv('lynx/csv/custom.csv')
 
 CLASSES = 25
 
 classDic = {
-    0: 'CasualMen',
-    1: 'CasualWomen',
-    2: 'EthnicMen',
-    3: 'CasualBoys',
-    4: 'FormalMen',
-    5: 'CasualGirls',
-    6: 'CasualUnisex',
-    7: 'SportsMen',
-    8: 'EthnicWomen',
-    9: 'SportsWomen',
-    10: 'FormalWomen',
-    11: 'SportsUnisex',
-    12: 'SportsBoys',
-    13: 'Smart CasualWomen',
-    14: 'TravelUnisex',
-    15: 'Smart CasualMen',
-    16: 'PartyWomen',
-    17: 'EthnicBoys',
-    18: 'EthnicGirls',
-    19: 'TravelWomen',
-    20: 'HomeUnisex',
-    21: 'PartyMen',
-    22: 'SportsGirls',
-    23: 'TravelMen',
-    24: 'FormalUnisex'
+    0: 'Casual Men',
+    1: 'Casual Women',
+    2: 'Ethnic Men',
+    3: 'Casual Boys',
+    4: 'Formal Men',
+    5: 'Casual Girls',
+    6: 'Casual Unisex',
+    7: 'Sports Men',
+    8: 'Ethnic Women',
+    9: 'Sports Women',
+    10: 'Formal Women',
+    11: 'Sports Unisex',
+    12: 'Sports Boys',
+    13: 'Smart Casual Women',
+    14: 'Travel Unisex',
+    15: 'Smart Casual Men',
+    16: 'Party Women',
+    17: 'Ethnic Boys',
+    18: 'Ethnic Girls',
+    19: 'Travel Women',
+    20: 'Home Unisex',
+    21: 'Party Men',
+    22: 'Sports Girls',
+    23: 'Travel Men',
+    24: 'Formal Unisex'
 } 
 transformaciones = transforms.Compose([transforms.Resize((64,64)),
                                       transforms.ToTensor(), #0 - 255--->0 - 1
@@ -208,44 +208,28 @@ def image_detail(request, image_name):
 
     new_model =CNNModel()
     new_model.load_state_dict(state)
-
+    #Obtengo la predicción de su clase
     img = Image.open('lynx/static/'+image_name)
     t_img = transformaciones(img).unsqueeze(0)
     prediction = new_model.predict(t_img)
 
     etiqueta=classDic[prediction.item()]
     print('Valor predicho: ',etiqueta )
+    #Obtengo las imágenes que pertenecen a la misma clase
+    condicion_etiqueta = ds['target'] == prediction.item()
+    candidatas=ds[condicion_etiqueta]
+    print(candidatas)
+    imagenes=candidatas.image.unique()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    images = [
-        {
-            'url': '/static/1163.jpg',
-            'name': 'Imagen 1',
-            'link': '/images/1',
-        },
-        {
-            'url': '/static/1535.jpg',
-            'name': 'Imagen 2',
-            'link': '/images/2',
-        },
-        {
-            'url': '/static/1571.jpg',
-            'name': 'Imagen 3',
-            'link': '/images/2',
-        },
-    ]
-   
-    return render(request, 'image_detail.html', {'images': images})
+    images = []
+    for imagen in imagenes:
+        image = {
+            'url': f'/static/images/{imagen}',
+            'name': f'Imagen {imagen}',
+            'link': f'/images/{imagen}',
+        }
+        images.append(image)
+    
+    
+    return render(request, 'image_detail.html', {'images': images, 'etiqueta': etiqueta})
 
