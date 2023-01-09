@@ -158,7 +158,7 @@ def N_mas_parecidas(imagen,n,imagenes):
         candidata = Image.open('lynx'+im.get('url'))       
         vec2 = img2vec.get_vec(candidata.convert('RGB'), tensor=True).reshape(512)
         cos_sim = cos(vec1.unsqueeze(0),vec2.unsqueeze(0))
-        if(cos_sim!=1): #no quiero devolver la propia imagen cono recomendación
+        if(cos_sim<1): #no quiero devolver la propia imagen cono recomendación
             dic[im.get('name')]=cos_sim
             similitudes.append(cos_sim)
     n_mayor_similitud=sorted(list(set(similitudes)), reverse=True)[:n]
@@ -210,9 +210,9 @@ def images_view(request):
             'link': '/images/59018.jpg',
         }, 
         {
-            'url': '/static/10054.jpg',
+            'url': '/static/3818.jpg',
             'name': 'Imagen 6',
-            'link': '/images/10054.jpg',
+            'link': '/images/3818.jpg',
         }, 
         
         
