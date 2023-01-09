@@ -10,6 +10,7 @@ import torch
 from torch import nn
 import torchmetrics as metrics
 import pytorch_lightning as pl
+from django.shortcuts import redirect
 
 
 ds=pd.read_csv('lynx/csv/custom.csv')
@@ -143,6 +144,29 @@ class CNNModel(pl.LightningModule):
         self.log('val_acc', accu, prog_bar=True)
         return loss, accu
 
+from img2vec_pytorch import Img2Vec
+cos = nn.CosineSimilarity(eps=1e-6)
+img2vec = Img2Vec(cuda=False, model='resnet-18')
+def N_mas_parecidas(imagen,n,imagenes):
+    
+    vec1 = img2vec.get_vec(imagen, tensor=True).reshape(512) #representación vectorial imagen de entrada
+    dic={}#diccionario con imagenes y similitudes
+    similitudes=[]
+    recomendadas={}
+    for im in imagenes: #cargo el diccionario con cada imagen como clave y la similitud como valor
+                        #y obtengo una lista con las n mayores similitudes, ordenada de mayor a menor
+        candidata = Image.open('lynx'+im.get('url'))       
+        vec2 = img2vec.get_vec(candidata.convert('RGB'), tensor=True).reshape(512)
+        cos_sim = cos(vec1.unsqueeze(0),vec2.unsqueeze(0))
+        if(cos_sim!=1): #no quiero devolver la propia imagen cono recomendación
+            dic[im.get('name')]=cos_sim
+            similitudes.append(cos_sim)
+    n_mayor_similitud=sorted(list(set(similitudes)), reverse=True)[:n]
+    for im in imagenes:
+        if(dic.get(im.get('name')) in n_mayor_similitud):
+            recomendadas[im.get('name')]=dic.get(im.get('name'))
+            
+    return recomendadas 
 
 
 # - Homepage
@@ -197,8 +221,17 @@ def images_view(request):
     return render(request, 'images.html', {'images': images})
 
 
+from django import forms
 
-# views.py
+class IntegerForm(forms.Form):
+    integer_field = forms.IntegerField(label='Introduce un entero')
+
+    def __init__(self, *args, **kwargs):
+        self.img = kwargs.pop('img')
+        self.images = kwargs.pop('images')
+        super(IntegerForm, self).__init__(*args, **kwargs)
+
+
 
 def image_detail(request, image_name):
     PATH="lynx/models/prueba6.pth"
@@ -225,11 +258,41 @@ def image_detail(request, image_name):
     for imagen in imagenes:
         image = {
             'url': f'/static/images/{imagen}',
-            'name': f'Imagen {imagen}',
+            'name': f'{imagen}',
             'link': f'/images/{imagen}',
         }
         images.append(image)
+  
+    form = IntegerForm(img=img, images=images)
+
+    if request.method == 'POST':
+        form = IntegerForm(request.POST, img=img, images=images)
+        if form.is_valid():
+            integer = form.cleaned_data['integer_field']
+            recomendadas = N_mas_parecidas(img, integer, images)
+            similares = []
+            for image, similarity in recomendadas.items() :
+                similar = {
+                    'url': f'/static/images/{image}',
+                    'name': f'{image}',
+                    'similarity':f'{similarity}',
+                    
+                }
+                img_url=f'/static/images/{image_name}'
+                similares.append(similar)
+            return render(request, 'similar_images.html', {'similares': similares,'img':img_url})
+            
+
+    return render(request, 'image_detail.html', {'form': form, 'images': images, 'etiqueta': etiqueta})
+
+
+
+
+
     
-    
-    return render(request, 'image_detail.html', {'images': images, 'etiqueta': etiqueta})
+
+
+
+
+
 

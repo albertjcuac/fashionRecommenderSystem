@@ -7,3 +7,4 @@ fastcore
 torchvision
 torchmetrics
 pytorch_lightning
+img2vec-pytorch

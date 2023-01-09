@@ -1,21 +1,39 @@
 <!-- image_detail.html -->
+{% load static %}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 <h1 class="display-4 text-center mb-4">La clase predicha es: {{ etiqueta|title }}</h1>
 <h2 class="text-center">Se han obtenido {{ images|length }} candidatos posibles, estos son algunos de ellos:</h2>
+
+
+
+
+
+
+  
 <div class="container mt-4">
     <div class="row">
-        {% for image in images|slice:":20" %}
-        <div class="col-4 mb-4">
-            <a  class="card h-100">
-                <img src="{{ image.url }}" alt="{{ image.name }}" class="card-img-top">
-                <div class="card-body">
-                    <h5 class="card-title text-center">{{ image.name }}</h5>
-                </div>
-            </a>
-        </div>
-        {% endfor %}
+      <div class="col-12">  <!-- columna con el formulario -->
+        <form method="post">
+          {% csrf_token %}
+          {{ form }}
+          <button type="submit" class="btn btn-primary btn-sm ">Enviar</button>
+        </form>
+      </div>
     </div>
-</div>
+    <div class="row">  <!-- fila con las imágenes -->
+      {% for image in images|slice:":20" %}
+        <div class="col-4 mb-4">
+          <a class="card h-100">
+            <img src="{{ image.url }}" alt="{{ image.name }}" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title text-center">{{ image.name }}</h5>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
