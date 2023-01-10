@@ -174,6 +174,9 @@ def N_mas_parecidas(imagen,n,imagenes):
 def home(request):
 
     return render(request, 'lynx/index.html')
+def contacto(request):
+
+    return render(request, 'contacto.html')
 
 
 from django.shortcuts import render
@@ -224,7 +227,7 @@ def images_view(request):
 from django import forms
 
 class IntegerForm(forms.Form):
-    integer_field = forms.IntegerField(label='Introduce un entero')
+    integer_field = forms.IntegerField(label='¿Cuántas recomendaciones quieres?')
 
     def __init__(self, *args, **kwargs):
         self.img = kwargs.pop('img')

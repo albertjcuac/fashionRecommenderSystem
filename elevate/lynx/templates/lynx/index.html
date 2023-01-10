@@ -1,1 +1,86 @@
-<h1> Hello from Space! </h1>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos personalizados */
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .bg-custom {
+            background-color: #ADD8E6;
+        }
+        h1 {
+            font-weight: 600;
+        }
+        .nav-text.custom-text{
+            font-size:12px;
+            color:gray;
+            float: right;
+          }
+    </style>
+    <title>Página principal</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Fashion Recommender System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/albertjcuac/fashionRecommenderSystem">Github</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contacto/">Contacto</a>
+                </li>
+                <li class="nav-item mx-5">
+                    <span class="nav-text custom-text">Alberto Monedero Martín, Trabajo Fin de Grado, Ingeniería del Software US</span>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container mt-4 bg-custom">
+        <div class="row">
+            <div class="col-12 text-center my-4">
+                <br></br>
+                <h1>Sistema de Recomendación para artículos de moda</h1>
+                <br></br>
+                <p> Se trata de un sistema de recomendación basado en redes convolucionales, el cual consiste en 2 bloques:<br></br>   </p>
+
+                    <dl>
+                        <dt>Primer Bloque: Clasificación y obtención de candidatos</dt><br></br
+                        <dd> Mediante una red convolucional diseñada y entrenada para clasificar imágenes del dataset según 2 parámetros: estilo y género.</dd>
+                        <dd> En este bloque se obtendra la etiqueta de nuestra imagen de entrada y los candidatos a recomendar (aquellos cuya etiqueta coincida con la predicha).</dd>
+                        <dt> Segundo Bloque: Obtención de productos más similares</dt><br></br
+                        <dd>Utilizando la representación vectorial de las imágenes candidatas con el modelo pre-entrenado resnet-18, se obtiene la similitud </dd>
+                        <dd>coseno de cada imagen candidata con la imagen de entrada, y posteriormente se devuelven los N artículos más similares.</dd>
+                        
+                    </dl>
+                   
+            </div>
+        </div>
+    </div>
+    <br></br>
+    <div class="row w-100 align-items-center">
+        <div class="col text-center">
+            <a href="/images/" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Comenzar</a>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+ </body>
+
+ </html>
+
+
+
+
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

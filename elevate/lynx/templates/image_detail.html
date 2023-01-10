@@ -2,27 +2,92 @@
 {% load static %}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-<h1 class="display-4 text-center mb-4">La clase predicha es: {{ etiqueta|title }}</h1>
-<h2 class="text-center">Se han obtenido {{ images|length }} candidatos posibles, estos son algunos de ellos:</h2>
 
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+  <style>
+      /* Estilos personalizados */
+      .card-img-top {
+          padding: 10px;
+          object-fit: cover;
+      }
+      body {
+          font-family: 'Montserrat', sans-serif;
+        }
+      h1,h2 {
+          font-weight: 600;
+        }
+      .bg-light {
+          background-color: #f5f5f5;
+        }
+     
+      .nav-text.custom-text{
+          font-size:12px;
+          color:gray;
+          float: right;
+        }
+      .bg-custom {
+          background-color: #ADD8E6;
+      }
+      .abs-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30vh;
+      }
+      
+      
+      
+      
+        
+  </style>
+  <title>Bloque 1</title>
+ 
+</head>
 
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Fashion Recommender System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/albertjcuac/fashionRecommenderSystem">Github</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/contacto/">Contacto</a>
+            </li>
+            <li class="nav-item mx-5">
+                <span class="nav-text custom-text">Alberto Monedero Martín, Trabajo Fin de Grado, Ingeniería del Software US</span>
+            </li>
+        </ul>
+    </div>
+</nav>
 
 
 
   
-<div class="container mt-4">
-    <div class="row">
-      <div class="col-12">  <!-- columna con el formulario -->
+<div class="container mt-4  bg-custom">
+    <br></br>
+    <h1 class="display-4 text-center mb-4">Bloque 1: Clasificación y obtención de candidatos </h1>
+    <br></br>
+    <h2 class="text-center">La clase predicha es: {{ etiqueta|title }}</h2>
+
+    <div class="abs-center">
         <form method="post">
           {% csrf_token %}
           {{ form }}
           <button type="submit" class="btn btn-primary btn-sm ">Enviar</button>
         </form>
-      </div>
-    </div>
+    </div>  
+
     <div class="row">  <!-- fila con las imágenes -->
-      {% for image in images|slice:":20" %}
+      <h3 class="text-center mx-3">Se han obtenido {{ images|length }} candidatos posibles, estos son algunos de ellos.</h2> 
+      {% for image in images|slice:":18" %}
         <div class="col-4 mb-4">
           <a class="card h-100">
             <img src="{{ image.url }}" alt="{{ image.name }}" class="card-img-top">
@@ -34,6 +99,6 @@
       {% endfor %}
     </div>
   </div>
-  
+</body>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
