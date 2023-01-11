@@ -173,7 +173,8 @@ def N_mas_parecidas(imagen,n,imagenes):
 
 def home(request):
 
-    return render(request, 'lynx/index.html')
+   return render(request, 'lynx/index.html')
+  
 def contacto(request):
 
     return render(request, 'contacto.html')
