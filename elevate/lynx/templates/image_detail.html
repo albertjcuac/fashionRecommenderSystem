@@ -89,9 +89,9 @@
           <button type="submit" class="btn btn-primary btn-sm ">Enviar</button>
         </form>
     </div>  
-
-    <div class="row">  <!-- fila con las imágenes -->
-      <h3 class="text-center mx-3">Se han obtenido {{ images|length }} candidatos posibles, estos son algunos de ellos.</h2> 
+    <h5 class="text-center mx-3">Se han obtenido {{ images|length }} candidatos posibles, estos son algunos de ellos.</h5>
+    <div class="row mt-4">  <!-- fila con las imágenes -->
+       
       {% for image in images|slice:":18" %}
         <div class="col-4 mb-4">
           <a class="card h-100">

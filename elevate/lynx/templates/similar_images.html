@@ -84,18 +84,18 @@
     </a>
   </div>
   <br></br>
-  <h2 class="display-5 text-center mb-4 "> Artículos similares </h2>
-
+  <h2 class="display-5 text-center mb-4 "> Artículos similares  </h2>
+  <br></br> 
    Basándonos en la similitud coseno de la representación vectorial de las imágenes, el tensor similitud indica en términos probabilísticos cuanto se parece a la imagen de entrada
-    siendo 0 el mínimo y 1 el máximo. 
-    <br></br>
+    siendo 0 el mínimo y 1 el máximo.  <br></br> <h5 class="text-center mx-3"> Los {{n}} artículos más similares ordenados de mayor a menor similitud son:</h5>
+
   <div class="row mt-4">
     {% for similar in similares %}
       <div class="col-4 mb-4">
         <a class="card h-100">
           <img src="{{ similar.url }}" alt="{{ similar.name }}" class="card-img-top">
           <div class="card-body">
-            <h5 class="card-title text-center">{{ similar.similarity }}</h5>
+            <h5 class="card-title text-center">similitud: {{ similar.similarity }}</h5>
           </div>
         </a>
       </div>

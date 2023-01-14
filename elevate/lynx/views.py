@@ -11,7 +11,7 @@ from torch import nn
 import torchmetrics as metrics
 import pytorch_lightning as pl
 from django.shortcuts import redirect
-
+import operator
 
 ds=pd.read_csv('lynx/csv/custom.csv')
 
@@ -165,7 +165,7 @@ def N_mas_parecidas(imagen,n,imagenes):
     for im in imagenes:
         if(dic.get(im.get('name')) in n_mayor_similitud):
             recomendadas[im.get('name')]=dic.get(im.get('name'))
-            
+    
     return recomendadas 
 
 
@@ -189,34 +189,44 @@ def images_view(request):
     # con información sobre las imágenes.
     images = [
         {
-            'url': '/static/1163.jpg',
+            'url': '/static/images/1163.jpg',
             'name': 'Imagen 1',
             'link': '/images/1163.jpg',
         },
         {
-            'url': '/static/1571.jpg',
+            'url': '/static/images/1571.jpg',
             'name': 'Imagen 2',
             'link': '/images/1571.jpg',
         },
         {
-            'url': '/static/24539.jpg',
+            'url': '/static/images/24539.jpg',
             'name': 'Imagen 3',
             'link': '/images/24539.jpg',
         }, 
         {
-            'url': '/static/37802.jpg',
+            'url': '/static/images/37802.jpg',
             'name': 'Imagen 4',
             'link': '/images/37802.jpg',
         }, 
         {
-            'url': '/static/59018.jpg',
+            'url': '/static/images/59018.jpg',
             'name': 'Imagen 5',
             'link': '/images/59018.jpg',
         }, 
         {
-            'url': '/static/3818.jpg',
+            'url': '/static/images/3818.jpg',
             'name': 'Imagen 6',
             'link': '/images/3818.jpg',
+        },
+        {
+            'url': '/static/images/1561.jpg',
+            'name': 'Imagen 7',
+            'link': '/images/1561.jpg',
+        }, 
+        {
+            'url': '/static/images/2334.jpg',
+            'name': 'Imagen 8',
+            'link': '/images/2334.jpg',
         }, 
         
         
@@ -246,7 +256,7 @@ def image_detail(request, image_name):
     new_model =CNNModel()
     new_model.load_state_dict(state)
     #Obtengo la predicción de su clase
-    img = Image.open('lynx/static/'+image_name)
+    img = Image.open('lynx/static/images/'+image_name)
     t_img = transformaciones(img).unsqueeze(0)
     prediction = new_model.predict(t_img)
 
@@ -272,19 +282,20 @@ def image_detail(request, image_name):
     if request.method == 'POST':
         form = IntegerForm(request.POST, img=img, images=images)
         if form.is_valid():
-            integer = form.cleaned_data['integer_field']
-            recomendadas = N_mas_parecidas(img, integer, images)
+            n = form.cleaned_data['integer_field']
+            recomendadas = N_mas_parecidas(img, n, images)
+            sorted_recomendadas = sorted(recomendadas.items(), key=operator.itemgetter(1),reverse=True)
             similares = []
-            for image, similarity in recomendadas.items() :
+            for tupla in sorted_recomendadas :  #las ordeno de mayor a menor similitud
                 similar = {
-                    'url': f'/static/images/{image}',
-                    'name': f'{image}',
-                    'similarity':f'{similarity}',
+                    'url': f'/static/images/{tupla[0]}',
+                    'name': f'{tupla[0]}',
+                    'similarity':f'{round(tupla[1].item(),7)}',
                     
                 }
                 img_url=f'/static/images/{image_name}'
                 similares.append(similar)
-            return render(request, 'similar_images.html', {'similares': similares,'img':img_url})
+            return render(request, 'similar_images.html', {'similares': similares,'img':img_url,'n':n})
             
 
     return render(request, 'image_detail.html', {'form': form, 'images': images, 'etiqueta': etiqueta})
