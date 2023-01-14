@@ -1,3 +1,4 @@
+import heapq
 from django.shortcuts import render
 from numpy import loadtxt
 import pandas as pd
@@ -168,7 +169,22 @@ def N_mas_parecidas(imagen,n,imagenes):
     
     return recomendadas 
 
+def N_mas_parecidas_optimizada(imagen,n,imagenes):
+    
+    vec1 = img2vec.get_vec(imagen, tensor=True).reshape(512) #representación vectorial imagen de entrada
+   
+    heap=[] #lista de tuplas (similitud,imagen)
 
+    for im in imagenes: 
+        candidata = Image.open('lynx'+im.get('url'))       
+        vec2 = img2vec.get_vec(candidata.convert('RGB'), tensor=True).reshape(512)
+        cos_sim = cos(vec1.unsqueeze(0),vec2.unsqueeze(0))
+        if(cos_sim<1): #no quiero devolver la propia imagen cono recomendación
+            
+            heapq.heappush(heap, (round(cos_sim.item(),7), im.get('name')))
+    
+    
+    return heapq.nlargest(n, heap) 
 # - Homepage
 
 def home(request):
@@ -283,6 +299,126 @@ def image_detail(request, image_name):
         form = IntegerForm(request.POST, img=img, images=images)
         if form.is_valid():
             n = form.cleaned_data['integer_field']
+            recomendadas = N_mas_parecidas_optimizada(img, n, images)
+            
+            similares = []
+            
+            for tupla in recomendadas :  
+                similar = {
+                    'url': f'/static/images/{tupla[1]}',
+                    'name': f'{tupla[1]}',
+                    'similarity':f'{tupla[0]}',
+                    
+                }
+                similares.append(similar)
+             
+            img_url=f'/static/images/{image_name}'    
+                
+            return render(request, 'similar_images.html', {'similares': similares,'img':img_url,'n':n})
+            
+
+    return render(request, 'image_detail.html', {'form': form, 'images': images, 'etiqueta': etiqueta})
+
+
+
+def images_view(request):
+    # Aquí puedes obtener las imágenes que quieres mostrar en la página
+    # desde la base de datos o cualquier otro lugar.
+    # En este ejemplo, suponemos que tienes una lista de diccionarios
+    # con información sobre las imágenes.
+    images = [
+        {
+            'url': '/static/images/1163.jpg',
+            'name': 'Imagen 1',
+            'link': '/images/1163.jpg',
+        },
+        {
+            'url': '/static/images/1571.jpg',
+            'name': 'Imagen 2',
+            'link': '/images/1571.jpg',
+        },
+        {
+            'url': '/static/images/24539.jpg',
+            'name': 'Imagen 3',
+            'link': '/images/24539.jpg',
+        }, 
+        {
+            'url': '/static/images/37802.jpg',
+            'name': 'Imagen 4',
+            'link': '/images/37802.jpg',
+        }, 
+        {
+            'url': '/static/images/59018.jpg',
+            'name': 'Imagen 5',
+            'link': '/images/59018.jpg',
+        }, 
+        {
+            'url': '/static/images/3818.jpg',
+            'name': 'Imagen 6',
+            'link': '/images/3818.jpg',
+        },
+        {
+            'url': '/static/images/1561.jpg',
+            'name': 'Imagen 7',
+            'link': '/images/1561.jpg',
+        }, 
+        {
+            'url': '/static/images/2334.jpg',
+            'name': 'Imagen 8',
+            'link': '/images/2334.jpg',
+        }, 
+        
+        
+    ]
+
+    return render(request, 'images.html', {'images': images})
+
+
+
+
+
+#CODIGO PREVIO A LA OPTIMIZACION    
+
+""""
+
+
+
+def image_detail_original(request, image_name):
+    PATH="lynx/models/prueba6.pth"
+   
+    #Cargo mi modelo ya entrenado
+    state = torch.load(PATH,map_location=torch.device('cpu'))
+
+    new_model =CNNModel()
+    new_model.load_state_dict(state)
+    #Obtengo la predicción de su clase
+    img = Image.open('lynx/static/images/'+image_name)
+    t_img = transformaciones(img).unsqueeze(0)
+    prediction = new_model.predict(t_img)
+
+    etiqueta=classDic[prediction.item()]
+    print('Valor predicho: ',etiqueta )
+    #Obtengo las imágenes que pertenecen a la misma clase
+    condicion_etiqueta = ds['target'] == prediction.item()
+    candidatas=ds[condicion_etiqueta]
+    print(candidatas)
+    imagenes=candidatas.image.unique()
+
+    images = []
+    for imagen in imagenes:
+        image = {
+            'url': f'/static/images/{imagen}',
+            'name': f'{imagen}',
+            'link': f'/images/{imagen}',
+        }
+        images.append(image)
+  
+    form = IntegerForm(img=img, images=images)
+
+    if request.method == 'POST':
+        form = IntegerForm(request.POST, img=img, images=images)
+        if form.is_valid():
+            n = form.cleaned_data['integer_field']
             recomendadas = N_mas_parecidas(img, n, images)
             sorted_recomendadas = sorted(recomendadas.items(), key=operator.itemgetter(1),reverse=True)
             similares = []
@@ -299,10 +435,7 @@ def image_detail(request, image_name):
             
 
     return render(request, 'image_detail.html', {'form': form, 'images': images, 'etiqueta': etiqueta})
-
-
-
-
+"""
 
     
 
