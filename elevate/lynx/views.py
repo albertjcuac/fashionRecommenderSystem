@@ -13,6 +13,8 @@ import torchmetrics as metrics
 import pytorch_lightning as pl
 from django.shortcuts import redirect
 import operator
+from multiprocessing import Pool
+
 
 ds=pd.read_csv('lynx/csv/custom.csv')
 
@@ -185,6 +187,25 @@ def N_mas_parecidas_optimizada(imagen,n,imagenes):
     
     
     return heapq.nlargest(n, heap) 
+
+def N_mas_parecidas_optimizada_mp(imagen,n,imagenes):
+    vec1 = img2vec.get_vec(imagen, tensor=True).reshape(512)
+    heap=[]
+    with Pool(2) as p:
+        #passing vec1 as an argument
+        results = p.map(calculate_similarity, [(im,vec1) for im in imagenes])
+    heap.extend([r for sublist in results for r in sublist])
+    return heapq.nlargest(n, heap)
+
+def calculate_similarity(im_vec1):
+    im = im_vec1[0]
+    vec1 = im_vec1[1]
+    candidata = Image.open('lynx'+im.get('url'))       
+    vec2 = img2vec.get_vec(candidata.convert('RGB'), tensor=True).reshape(512)
+    cos_sim = cos(vec1.unsqueeze(0),vec2.unsqueeze(0))
+    return [(round(cos_sim.item(),7), im.get('name'))] if cos_sim<1 else []
+
+
 # - Homepage
 
 def home(request):
@@ -261,8 +282,6 @@ class IntegerForm(forms.Form):
         self.images = kwargs.pop('images')
         super(IntegerForm, self).__init__(*args, **kwargs)
 
-
-
 def image_detail(request, image_name):
     PATH="lynx/models/prueba6.pth"
    
@@ -277,11 +296,11 @@ def image_detail(request, image_name):
     prediction = new_model.predict(t_img)
 
     etiqueta=classDic[prediction.item()]
-    print('Valor predicho: ',etiqueta )
+
     #Obtengo las imágenes que pertenecen a la misma clase
     condicion_etiqueta = ds['target'] == prediction.item()
     candidatas=ds[condicion_etiqueta]
-    print(candidatas)
+
     imagenes=candidatas.image.unique()
 
     images = []
@@ -307,7 +326,7 @@ def image_detail(request, image_name):
                 similar = {
                     'url': f'/static/images/{tupla[1]}',
                     'name': f'{tupla[1]}',
-                    'similarity':f'{tupla[0]}',
+                    'similarity':f'{round(tupla[0]*100,2)}',
                     
                 }
                 similares.append(similar)
@@ -379,11 +398,10 @@ def images_view(request):
 
 #CODIGO PREVIO A LA OPTIMIZACION    
 
-""""
 
 
-
-def image_detail_original(request, image_name):
+"""
+def image_detail(request, image_name):
     PATH="lynx/models/prueba6.pth"
    
     #Cargo mi modelo ya entrenado
@@ -435,9 +453,9 @@ def image_detail_original(request, image_name):
             
 
     return render(request, 'image_detail.html', {'form': form, 'images': images, 'etiqueta': etiqueta})
-"""
 
-    
+
+    """
 
 
 
