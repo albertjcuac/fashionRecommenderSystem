@@ -27,4 +27,4 @@ Add additional notes about how to deploy this on a live system
 
 ## Autor
 
-* **Alberto Monedero Martín**- [github](https://github.com/albertjcuac)
+* **Alberto Monedero Martín** - [github](https://github.com/albertjcuac)
