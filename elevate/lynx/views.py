@@ -215,6 +215,10 @@ def home(request):
 def contacto(request):
 
     return render(request, 'contacto.html')
+def modelos(request):
+
+    return render(request, 'modelos.html')
+
 
 
 from django.shortcuts import render

@@ -32,7 +32,7 @@
             margin-bottom: 1.5em;
         }
     </style>
-    <title>Contacto</title>
+    <title>Modelos</title>
 </head>
 
 <body>
@@ -50,6 +50,7 @@
                         <a class="nav-link text-dark" href="/modelos/">Modelos</a>
                     </li>
                 <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link text-dark" href="https://github.com/albertjcuac/fashionRecommenderSystem">Github</a>
                 </li>
                 <li class="nav-item">
@@ -65,15 +66,19 @@
     <div class="container mt-5 bg-custom">
        <div class="row">
             <div class="col-12 text-center my-4">
-                <h1 class="text-center my-4">Contacto</h1>
+                <h1 class="text-center my-4">Información de los modelos utilizados</h1>
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
                        
-                        <div class="text-center my-3">
-                            <p>Puedes contactarme directamente en:</p>
-                            <p class="text-danger">
-                              <a href="mailto:albmonmar3@gmail.com">albmonmar3@gmail.com</a>
-                            </p>
+                        <div class=" my-3">
+                            <h2 class="text-center my-4">Bloque 1</h2>
+                            <p class="text-left">El modelo CNN empleado en el bloque 1 a la hora de clasificar la imagen de entrada, es un modelo diseñado desde cero utilizando Pytorch. Ha sido entrenado durante 4 épocas con un tamaño de lote de 64 imágenes, obteniendo para el subconjunto de prueba una función de pérdida de 0.4497 y una precisión del 84.62%.</p>
+                            
+                        </div>
+                        <div class=" my-3">
+                            <h2 class="text-center my-4">Bloque 2</h2>
+                            <p class="text-left">El modelo CNN empleado en el bloque 2 para obtener los vectores de características de las imágenes con el fin de compararlas, es el modelo pre-entrenado resnet-18, una red convolucional de 18 capas de profundidad.</p>
+                            <a class="link" href="https://pytorch.org/vision/main/models/generated/torchvision.models.resnet18.html">documentación resnet-18</a>
                         </div>
                     </div>
                 </div>
