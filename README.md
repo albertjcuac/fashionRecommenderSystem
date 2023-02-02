@@ -4,6 +4,7 @@ Se trata de una aplicación simple cuyo objetivo es el de mostar de manera visua
 * Bloque 1 - Clasificación del producto de entrada mediante CNN para la obtención de candidatos a recomendar.
 * Bloque 2 - Obtención de los N candidatos más parecidos a la imagen de entrada basándonos en la similitud coseno.
 
+  [Notebook Kaggle](https://www.kaggle.com/code/albertomonedero/fashioncnn) 
 
 ## Despliegue
 
