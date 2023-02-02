@@ -12,11 +12,11 @@ Con las siguientes instrucciones se explica como desplegar en local la aplicaci√
 
 ### Prerequisitos
 
-What things you need to install the software and how to install them
+......
 
 ### Instrucciones
 
-Add additional notes about how to deploy this on a live system
+......
 
 ## Tecnolog√≠as
 
