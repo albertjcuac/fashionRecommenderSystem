@@ -10,13 +10,14 @@ Se trata de una aplicación simple cuyo objetivo es el de mostar de manera visua
 
 Con las siguientes instrucciones se explica como desplegar en local la aplicación.
 
-### Prerequisitos
-
-......
-
-### Instrucciones
-
-......
+### Crear entorno virtual
+py -m venv env
+### Activar el entorno virtual
+env\Scripts\activate
+### Instalar los requisitos 
+pip install -r requirements.txt
+### Lanzar aplicación en local (desde la carpeta "elevate")
+py manage.py runserver
 
 ## Tecnologías
 
