@@ -9,7 +9,7 @@ Se trata de una aplicación simple cuyo objetivo es el de mostar de manera visua
 ## Despliegue
 
 Con las siguientes instrucciones se explica como desplegar en local la aplicación.
-### prerrequisitos
+### Prerrequisitos
 [Python 3.9.8](https://www.python.org/downloads/release/python-398/)  
 Puede que sea compatible con otras versiones de Python, teniendo en cuenta que Pytorch solo da soporte a las versiones 3.7-3.9.
 ### Crear entorno virtual
