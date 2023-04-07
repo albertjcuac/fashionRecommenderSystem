@@ -12,6 +12,7 @@
         .card-img-top {
             padding: 10px;
             object-fit: cover;
+     
         }
         body {
             font-family: 'Montserrat', sans-serif;
@@ -78,7 +79,7 @@
                 <h4>Elije un artículo que te interese y comenzará el proceso</h4>
             </div>
             {% for image in images %}
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-2">
                 <a href="{{ image.link }}" class="card h-100">
                     <img src="{{ image.url }}" alt="{{ image.name }}" class="card-img-top ">
                     <div class="card-body">
